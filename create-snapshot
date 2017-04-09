@@ -1,17 +1,20 @@
-#!/bin/bash
 set -e
-function time-echo {
+function time_echo {
   printf "`date -u`: ${1}\n"
 }
 
-time-echo "Running elastic backup"
-time-echo "Creating elasticsnapshot on ${ELASTIC_BU_URL}"
-time-echo "Using repository ${ELASTIC_BU_REPO_NAME} of type '${ELASTIC_BU_REPO_TYPE}'"
+ELASTIC_BU_REPO_NAME="${ELASTIC_BU_REPO_NAME:-autobackup}"
+ELASTIC_BU_REPO_TYPE="${ELASTIC_BU_REPO_TYPE:-azure}"
+ELASTIC_BU_REPO_SETTINGS="${ELASTIC_BU_REPO_SETTINGS:-{}}"
+
+time_echo "Running elastic backup"
+time_echo "Creating elasticsnapshot on ${ELASTIC_BU_URL}"
+time_echo "Using repository ${ELASTIC_BU_REPO_NAME} of type '${ELASTIC_BU_REPO_TYPE}'"
 curl -s -S -X PUT -H 'Content-Type: application/json' \
      -d "{\"type\": \"${ELASTIC_BU_REPO_TYPE}\", \"settings\": ${ELASTIC_BU_REPO_SETTINGS}}" \
      "${ELASTIC_BU_URL}/_snapshot/${ELASTIC_BU_REPO_NAME}?wait_for_completion=true"
-time-echo "Done..."
+time_echo "Done..."
 snapshot=`date +%s`
-time-echo "Creating snapshot: ${snapshot}"
+time_echo "Creating snapshot: ${snapshot}"
 curl -f -s -S -v -X PUT "${ELASTIC_BU_URL}/_snapshot/${ELASTIC_BU_REPO_NAME}/${snapshot}?wait_for_completion=true"
-time-echo "Done..."
+time_echo "Done..."

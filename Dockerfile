@@ -1,3 +1,4 @@
-FROM appropriate/curl:latest
+FROM alpine:latest
+RUN apk add --no-cache curl
 ADD ./create-snapshot .
-CMD ./create-snapshot
+CMD sh ./create-snapshot
