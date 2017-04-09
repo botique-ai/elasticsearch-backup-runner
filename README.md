@@ -1,6 +1,6 @@
 # Elasticsearch Backup Runner
 A simple curl command that will invoke the elasticsearch snapshot mechanism.  
-Usefull as a scheduled docker container or for one off manual backups.
+Useful as a scheduled docker container or for one off manual backups.
 
 ENV VARS
 --------
